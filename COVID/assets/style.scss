@@ -1,0 +1,234 @@
+body {
+  background-color: #2a292c;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background-color: #ffffff;
+  color: black;
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 0 18%;
+  align-items: center;
+  height: 42px;
+  text-decoration: none;
+
+  & * {
+    color: black;
+    display: flex;
+  }
+
+  &-brand {
+    &--div {
+      align-items: center;
+    }
+
+    &--logo {
+      height: 40px;
+      margin: 0 10px 0 5px;
+    }
+
+    &--title {
+      font-size: 1.5rem;
+      text-decoration: none;
+      font-weight: 700;
+    }
+  }
+
+  &-links {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 10px;
+    justify-content: flex-end;
+  }
+
+  &-link {
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.3rem 0.5rem;
+    transition: all 0.3s ease-in-out;
+    border: none;
+    border-radius: 6px;
+
+    &:hover {
+      background-color: #f0edf7;
+    }
+  }
+}
+
+.container {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 1rem;
+  border: 1px solid #ffffff21;
+  border-radius: 6px;
+
+  &-inner {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #39383b;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px solid #ffffff21;
+  border-radius: 6px;
+
+  &-tabs {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  &-tab {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 42px !important;
+    border: none !important;
+    border-bottom: 1px solid #ffffff21 !important;
+    border-radius: 2px !important;
+    transition: all 0.3s ease-in-out;
+    background-color: #39383b !important;
+    color: white !important;
+    font-weight: 500 !important;
+
+    &.global span{
+      width: 100px;
+
+      &::after {
+        content: url('../assets/fi-sr-globe.svg');
+        position: relative;
+        right: -10px;
+        top: 4px;
+        filter: invert(1);
+      }
+    }
+
+    &.state span{
+      width: 100px;
+      
+      &::after {
+        content: url('../assets/fi-sr-map.svg');
+        position: relative;
+        right: -10px;
+        top: 4px;
+        filter: invert(1);
+      }
+    }
+
+    &--selected {
+      background-color: #272628 !important;
+      font-size: 17px;
+      font-weight: 900;
+      border: none;
+      border-top: 3px solid #63D4CC !important;
+    }
+
+    &:hover {
+      background-color: #ffffff21;
+    }
+
+    &--icon {
+        margin: 0 5px;
+    }
+
+    &-text {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    &__content {
+      height: 100%;
+      width: 98%;
+      display: flex;
+      align-items: center;
+      align-content: center;
+      justify-content: space-evenly;
+      border-bottom: 1px solid #ffffff21;
+    }
+  }
+}
+
+.tab-content {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 5px 1.2%;
+}
+
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+  flex-grow: 1;
+}
+
+td .extra {
+  margin-left: 7px;
+  font-size: 11px;
+  color: red;
+}
+
+.cell-markdown{
+  & > p {
+    margin: 0;
+    padding-left: 5px;
+    height: 42px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-end;
+  }
+}
+
+td .data-icon{
+  margin-right: 7px;
+  font-size: 18px;
+
+  &.up{
+    color: red;
+  }
+
+  &.down{
+    color: green;
+  }
+}
+
+.global {
+  &-toolbar {
+    position: absolute;
+    right: 3%;
+    margin-top: 5px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+}
+
+.info {
+  width: 160px;
+  color: black;
+}
