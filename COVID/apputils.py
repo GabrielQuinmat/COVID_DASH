@@ -35,3 +35,25 @@ def assignGeoData(geo, df):
     for uf in ufs:
         uf['properties']['cases'] = df[df.estado == uf['properties']['UF_05']]['casosAcumulado_current'].values[0]
     return geo
+
+def assignMunGeoData(geo, df):
+    munics = geo['features']
+    for munic in munics:
+        id = munic['properties']['id'][0:6]
+        munic['properties']['codid'] = munic['properties']['id'][0:6]
+        munic['properties']['cases'] = df[df.codmun == id]['casosAcumulado'].values[0]
+        # print(id)
+        # print(df[df.codmun == id])
+        # munic['properties']['cases'] = df[df.codmun == id]['casosAcumulado'].values[0]
+    return geo
+
+def filterUF(geo, uf):
+    geocopy = geo.copy()
+    munics = geocopy['features']
+    municsFiltered = []
+    
+    for munic in munics:
+        if munic['properties']['UF'] == uf:
+            municsFiltered.append(munic)
+    geocopy['features'] = municsFiltered
+    return geocopy

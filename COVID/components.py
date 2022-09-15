@@ -1,4 +1,5 @@
 from datetime import date
+from turtle import width
 from dash import Dash, html, dcc
 
 
@@ -100,11 +101,6 @@ def TabContent(id, children=[]):
 def GlobalTab(acuPlot, mapGlobal, table, min_date, max_date):
     return [
         html.H2(children='Country Level'),
-        # GlobalToolbar([dcc.DatePickerRange(id='datepick',
-        #                     min_date_allowed=min_date,
-        #                     max_date_allowed=max_date,
-        #                     end_date=max_date
-        #                     )]),
         Row([dcc.Graph(figure=acuPlot, style={'width': '100%'})]),
         Row([
             mapGlobal,
@@ -118,8 +114,18 @@ def GlobalTab(acuPlot, mapGlobal, table, min_date, max_date):
 def GlobalToolbar(children):
     return html.Div([html.I(), *children], className='global-toolbar')
 
-def StateTab():
-    return []
+def StateTab(choromap):
+    return [
+        html.H2('State Level'),
+        dcc.Dropdown(["RO", "AC", "AM", "RR", "PA", "AP", "TO", "MA", 
+    "PI", "CE", "RN", "PB", "PE", "AL", "SE", "BA", "MG",
+    "ES", "RJ", "SP", "PR", "SC", "RS", "MS", "MT", "GO",
+    "DF"], 'SP', id='state-dropdown', style={'width': '200px'}),
+        Row([
+            choromap
+        ])
+        
+    ]
 
 
 def Row(children):

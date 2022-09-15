@@ -3,10 +3,9 @@ import pandas as pd
 import numpy as np
 import sqlite3 as sql
 import sqlalchemy as sa
-import pyodbc
 from glob import glob
 
-path = "C:/Users/gquin/Downloads/HIST_PAINEL_COVIDBR_05set2022/"
+path = "C:/Users/gquin/Downloads/HIST_PAINEL_COVIDBR_13set2022/"
 files = glob(path + '*.csv', recursive=True)
 df = pd.concat([pd.read_csv(file, delimiter=';') for file in files])
 
@@ -14,7 +13,7 @@ totalDF = df[df.regiao == 'Brasil']
 stateDF = df[(df.regiao != 'Brasil') & (df.municipio.isna()) & (df.codmun.isna())]
 granularDF = df[(df.regiao != 'Brasil') & (df.municipio.notna()) & (df.codmun.notna())]
 
-conn = sql.connect('G:/Projects/Personal/Dash/COVID/covid.db')
+conn = sql.connect('./COVID/covid.db')
 totalDF.to_sql('global', conn, if_exists='replace', index=False)
 stateDF.to_sql('state', conn, if_exists='replace', index=False)
 granularDF.to_sql('granular', conn, if_exists='replace', index=False)

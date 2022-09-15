@@ -168,7 +168,7 @@ body {
 td .extra {
   margin-left: 7px;
   font-size: 11px;
-  color: red;
+  color: #3EC4D6;
 }
 
 .cell-markdown > p {
@@ -186,10 +186,10 @@ td .data-icon {
   font-size: 18px;
 }
 td .data-icon.up {
-  color: red;
+  color: #3EC4D6;
 }
 td .data-icon.down {
-  color: green;
+  color: #0377A8;
 }
 
 .global-toolbar {

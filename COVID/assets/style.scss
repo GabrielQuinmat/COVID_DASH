@@ -189,7 +189,7 @@ body {
 td .extra {
   margin-left: 7px;
   font-size: 11px;
-  color: red;
+  color: #3EC4D6;
 }
 
 .cell-markdown{
@@ -209,11 +209,11 @@ td .data-icon{
   font-size: 18px;
 
   &.up{
-    color: red;
+    color: #3EC4D6;
   }
 
   &.down{
-    color: green;
+    color: #0377A8;
   }
 }
 
