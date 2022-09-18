@@ -122,7 +122,8 @@ def StateTab(choromap):
     "ES", "RJ", "SP", "PR", "SC", "RS", "MS", "MT", "GO",
     "DF"], 'SP', id='state-dropdown', style={'width': '200px'}),
         Row([
-            choromap
+            dcc.Graph(id='stateMap', figure=choromap, style={'width': '100%'})
+            # choromap
         ])
         
     ]

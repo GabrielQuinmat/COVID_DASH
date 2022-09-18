@@ -68,10 +68,17 @@ def choroplethMap(geojson, df):
         locations="codmun",
         color="casosAcumulado",
         scope="south america",
+        locationmode='geojson-id',
+        basemap_visible=True,
     )
-    choromap.update_geos(fitbounds="locations", visible=False)
+    choromap.update_geos(
+        fitbounds="locations", 
+        visible=False,
+        projection_type="natural earth",
+        showland=True,
+        )
     choromap.update_layout(
-        # margin={"r": 0, "t": 0, "l": 0, "b": 0},
+        margin={"r": 0, "t": 0, "l": 0, "b": 0},
         template="plotly_dark"
     )
     choromap.update_traces(colorbar_title="Acumulated Cases", marker_line_width=1, marker_line_color="rgba(255, 255, 255, 0.439)")

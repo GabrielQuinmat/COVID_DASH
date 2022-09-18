@@ -42,9 +42,7 @@ def assignMunGeoData(geo, df):
         id = munic['properties']['id'][0:6]
         munic['properties']['codid'] = munic['properties']['id'][0:6]
         munic['properties']['cases'] = df[df.codmun == id]['casosAcumulado'].values[0]
-        # print(id)
-        # print(df[df.codmun == id])
-        # munic['properties']['cases'] = df[df.codmun == id]['casosAcumulado'].values[0]
+        munic['id'] = id
     return geo
 
 def filterUF(geo, uf):

@@ -2,7 +2,7 @@
 # visit http://127.0.0.1:8050/ in your web browser.
 
 
-from dash import Dash, html, dcc, page_registry, page_container
+from dash import Dash, html, dcc, page_registry, page_container, ctx
 from dash.dependencies import Input, Output
 import dash_leaflet as dl
 from dash_extensions.javascript import arrow_function, assign, Namespace
@@ -12,6 +12,7 @@ from dash.dash_table import DataTable
 from dash.exceptions import PreventUpdate
 from datetime import date
 import geojson as gj
+import json
 import plotly.express as px
 import pandas as pd
 from components import *
@@ -31,6 +32,8 @@ app = Dash(
 )
 
 current_tab = ""
+current_state = "SP"
+
 
 def globalTabServer(ns):
     totalDF = queryDB("SELECT * FROM global")
@@ -178,45 +181,8 @@ munDF["codmun"] = munDF.codmun.astype(str)
 geo = gj.load(open("COVID/assets/brasil_mun.geojson"))
 geo = assignMunGeoData(geo, munDF)
 ufgeo = filterUF(geo, "SP")
-with open("COVID/assets/brasil_mundata.json", "w") as f:
-    gj.dump(ufgeo, f)
-current_state = "SP"
-style_handle = ns("styleHandler")
-style = dict(weight=1, opacity=1, color="white", dashArray="3", fillOpacity=0.7)
-colorscale = GRADIENT_PALETTE
-classes = (
-    munDF[munDF.estado == "SP"].casosAcumulado.quantile([0.2, 0.4, 0.6, 0.8, 1]).values
-)
-geojson = dl.GeoJSON(
-    url="assets/brasil_mundata.json",
-    options=dict(style=style_handle),
-    # when true, zooms to bounds when data changes (e.g. on load)
-    zoomToBounds=True,
-    # when true, zooms to bounds of feature (e.g. polygon) on click
-    zoomToBoundsOnClick=True,
-    # style applied on hover
-    hoverStyle=arrow_function(dict(weight=5, color="#FFF", dashArray="3")),
-    hideout=dict(
-        colorscale=colorscale, classes=classes, style=style, colorProp="cases"
-    ),
-    id="geojson-mun-obj",
-)
 
-info = html.Div(
-    children=get_info(),
-    id="info-mun-div",
-    className="info",
-    style={
-        "position": "absolute",
-        "top": "10px",
-        "right": "10px",
-        "z-index": "1000",
-    },
-)
-choromap = stateMap(geojson, info)
-
-
-# choromap = choroplethMap(ufgeo, munDF)
+choromap = choroplethMap(ufgeo, munDF)
 # | Global Tab Callbacks
 
 
@@ -225,6 +191,7 @@ choromap = stateMap(geojson, info)
     Input("tabs", "value"),
 )
 def renderTab(tab):
+
     global current_tab
     if current_tab == tab:
         raise PreventUpdate
@@ -238,50 +205,28 @@ def renderTab(tab):
         return StateTab(choromap)
 
 
-@app.callback(
-    Output("info-div", "children"), 
-    [Input("geojson-obj", "hover_feature")])
-def info_hover(feature):
-    return get_info(feature)
+# @app.callback(
+#     Output("info-div", "children"),
+#     [Input("geojson-obj", "hover_feature")])
+# def info_hover(feature):
+#     cid = ctx.triggered_id if not None else "Not triggered"
+#     ctx_msg = json.dumps({
+#         'triggered': ctx.triggered,
+#         'inputs': ctx.inputs
+#     }, indent=2)
+#     print(ctx_msg)
+#     return get_info(feature)
 
 
-# | State Tab Callbacks
+
+
 @app.callback(
-    Output("stateMap", "children"), 
-    Input("state-dropdown", "value"))
+    Output('stateMap', 'figure'),
+    Input('state-dropdown', 'value')
+)
 def filterState(state):
-    global current_state
-    if current_state != state:
-        current_state = state
-        ufgeo = filterUF(geo, state)
-        with open("COVID/assets/brasil_mundata.json", "w") as f:
-            gj.dump(ufgeo, f)
-
-        style_handle = ns("styleHandler")
-        style = dict(weight=1, opacity=1, color="white", dashArray="3", fillOpacity=0.7)
-        colorscale = GRADIENT_PALETTE
-        classes = (
-            munDF[munDF.estado == "SP"]
-            .casosAcumulado.quantile([0.2, 0.4, 0.6, 0.8, 1])
-            .values
-        )
-        geojson = dl.GeoJSON(
-            url="assets/brasil_mundata.json",
-            options=dict(style=style_handle),
-            # when true, zooms to bounds when data changes (e.g. on load)
-            zoomToBounds=True,
-            # when true, zooms to bounds of feature (e.g. polygon) on click
-            zoomToBoundsOnClick=True,
-            # style applied on hover
-            hoverStyle=arrow_function(dict(weight=5, color="#FFF", dashArray="3")),
-            hideout=dict(
-                colorscale=colorscale, classes=classes, style=style, colorProp="cases"
-            ),
-            id="geojson-mun-obj",
-        )
-        return stateMap(geojson, info)
-    else:
-        raise PreventUpdate
+    ufgeo = filterUF(geo, state)
+    return choroplethMap(ufgeo, munDF)
 
 
 app.layout = html.Div(
